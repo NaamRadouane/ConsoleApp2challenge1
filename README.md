@@ -1,0 +1,1 @@
+Objectsclass+serialization+captures+imageinputanalysis
