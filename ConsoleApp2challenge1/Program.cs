@@ -433,33 +433,64 @@ namespace ConsoleApp2challenge1
         }
         #endregion
         static List<Thing> List1 = new List<Thing>();//saving into file
-        static List<Thing> List2 = new List<Thing>();//getting from the file
+        static List<Thing> ListOfGetting = new List<Thing>();//getting from the file
         static List<Thing> foundInEYE = new List<Thing>();//
         static List<Thing> Focus_area = new List<Thing>();
         static List<Thing> DecisionOrder = new List<Thing>();
-        /* 1.input 
-         * 2.analysis:extracting objects 
-         * 3.competeting inerest
-         * 4.flow:go for most pleasurable learned if painpattern exists go for easiest if no pain no pleasure random
+        static int SystemEnergy = 100;//this variable is important else the program will be running forever take in all your precious ressources
+
+        /*////consciousness/////
+         * 1.input 
+         * 2.T1 analysis:extracting objects if there is any from the "Object abbreviating order" based on how close to the feature and its locations
+         * 2.T2 analysing the frame and and following story if there is any: by diffrence  of features (intensities, soble,directions) for objects, and by objects for stories
+         * 3.T3 competing inerest with a comparison to the order of the object in the list of "Absolute value deciding order" 
+         *  go for the most pleasurable learned if painpattern exists go for easiest if no pain no pleasure random 
+         *  depending on the existing stories if no existing stories are there get input if you are tired of that go random until you get enough
+         * ____
+         * first time:
+         * 1. first thread will get the input but when it tries to extract objects from it  it will fail.
+         * 2. second thread will fail to extract any object from the input and will fail to extract any story.
+         * 3. no interest will be found since there is no objects
+         * 
+         * second time:
+         * 1. first thread will get the input but when it tries to extract objects from it  it will fail.again
+         * 2. second thread will possibly be able to extract objects but fail at the stories again ,the extracted objects must be linked to a judging rules
+         * 3. it can focuse only on the extracted objects 
+         * 
+         * third time:
+         * 1. first thread will get the input  when it tries to extract objects from it, it can succeed.
+         * 2. second thread will possibly be able to extract objects and stories
+         * 3. it can focus  on the end of stories objects and compare it with the objects
+         * 
+         * 
          */
         static void Main(string[] args)
         {
-            //start by deserializing the old object that are in a list made of all the list of inputs and atribut
-            //after deserializing while it has energy 
-            //if patterns thread could find a pattern in the output of the input Analysis thread, while the l
-            //getting meaning from it
-            //this meaning gives a resut as another object whether it is an action generator or not
-          
+            //start by deserializing the old objects that are in the ListOfSaving made of all the list of inputs and atribut
+            
+           
             FileStream FileS2 = File.OpenRead(@"C:\Users\user\Desktop\guess.bin");
-            List2 = Serializer.Deserialize<List<Thing>>(FileS2);
-            //desirializing trees too
+            ListOfGetting = Serializer.Deserialize<List<Thing>>(FileS2);
 
+            //desirializing orders too
+
+            //while it has energy 
+            while (SystemEnergy != 0)
+            {   //the idea of using thread is that the input and the evaluation of it should be always running while the pattern finding is happenning of the frames
+                // in this thread all the operations of the consciousness should happen  the other thre
+                Thread eyeCameraThread = new Thread(new ThreadStart(eyeCamera));
+                eyeCameraThread.Start();
+                //if patterns thread could find a pattern in the output of the input Analysis thread
+                //getting meaning from it
+
+                //this meaning gives a resut as another object whether it is an action generator or not
+                SystemEnergy--;
+            }
             //if it's not epmty
             // List<Thing> organizedlist=List2.OrderByDescending(o=>o.value).ToList();
-            
+
             //input
-            Thread eyeCameraThread = new Thread(new ThreadStart(eyeCamera));
-            eyeCameraThread.Start();
+            
             //the input is  a thread because it always sending to the  bashirnadir to give us output
             //the output is a field of interest that we take the interest from which can be a move
 
@@ -469,7 +500,7 @@ namespace ConsoleApp2challenge1
 
 
             // Kill all threads and exit applisecation
-            eyeCameraThread.Abort();
+            
 
             using (FileStream fileS1 = File.Open(@"C:\Users\user\Desktop\guess.bin", FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
